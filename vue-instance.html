@@ -13,11 +13,15 @@
   </head>
 <body>
 
-  <div id="instance">
-      <p> {{hello}} </p>
-      <button @click="clicked" class="btn btn-success">Trigger</button>
-  </div>
-  
+    <div id="vm1">
+        <p> {{hello}} </p>
+        <button @click="clicked" ref="myButton" class="btn btn-success">{{hello}}</button>
+        <button @click="clicked2"  class="btn btn-success">{{hello}}</button>
+        <comp></comp>
+    </div>
+    <div id="vm2">
+       {{hello}}
+    </div>
 
 <script src="vue-instance.js"></script>
 </body>
