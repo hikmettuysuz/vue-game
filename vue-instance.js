@@ -1,30 +1,89 @@
+var eventBus = new Vue();
 
 // component
-Vue.component('comp', {
-    template: '<button>You clicked me times.</button>'
+Vue.component('product-form', {
+    template: '#productForm',
+    data () {
+       return {
+        form: {
+            name: null,
+            price: null,
+            quantity: null,
+            imagePath: null
+        }
+       } 
+    },
+    methods: {
+        addProduct(){
+            eventBus.$emit('addProduct',this.form);
+            this.form = {
+                name: null,
+                price: null,
+                quantity: null,
+                imagePath: null
+            }
+        },
+        onChange(e) {
+            const file = e.target.files[0];
+            this.form.imagePath = URL.createObjectURL(file);
+        },
+    }
  });
 
+Vue.component('progress-bar',{
+    template: '#progressBar',
+    data () {
+        return {
+            count: 0
+        }
+    },
+    created() {
+        eventBus.$on('updateProgressBar', (counter) => {
+            if(counter >= 11){
+                return false
+            }else {
+                this.count = counter
+            }
+        })
+    }
+})
 
+Vue.component('product-list',{
+    template: '#productList',
+    data () {
+        return {
+            productList: [],
+            counter: 0
+        }
+    },
+    created () {
+        eventBus.$on('addProduct',(product) => {
+            if(this.counter >= 10) {
+                alert('Maximum 10 adet eklenebilir')
+            }
+            else {
+                this.counter++
+                this.productList.push(product);
+                eventBus.$emit('updateProgressBar',this.counter)
+            }
+        })
+    }
+})
 
-var data = {
-    hello: "Hello World"
-}
 var vm1 = new Vue({
-    //el: "#vm1",
-    data: data,
-    methods: {
-        clicked: function(){
-            this.$refs.myButton.innerText = "as";
-        },
-        clicked2: function(){
-            this.hello = "Hii"
+  //  el: "#app", //vm1 mount ile aynı
+    data () {
+        return {
+            show: false
         }
     },
     beforeCreate: function(){
         console.log("beforeCreate")
     },
     created: function(){
-        console.log("created")
+        eventBus.$on('updateProgressBar', () => {
+            this.show = true
+        })
     },
     beforeMount: function(){
         console.log("beforeMount")
@@ -46,12 +105,12 @@ var vm1 = new Vue({
     }
 })
 
-vm1.$mount('#vm1'); // el ile aynı parametre yollanır.
+ vm1.$mount('#app'); // el ile aynı parametre yollanır.
 
 
 //yukarıdaki ile aynı yapı fakat template barındırıyor.
-var vm2 = new Vue({
+/* var vm2 = new Vue({
     template: '<h1>Deneme</h1>'
-})
+}) */
 
-vm2.$mount('#vm2');
+// vm2.$mount('#vm2');
