@@ -1,6 +1,11 @@
 var eventBus = new Vue();
 
 // component
+
+Vue.component('header-part',{
+    template: '#header-part'
+})
+
 Vue.component('product-form', {
     template: '#productForm',
     data () {
@@ -67,6 +72,13 @@ Vue.component('product-list',{
                 eventBus.$emit('updateProgressBar',this.counter)
             }
         })
+    },
+    methods: {
+        removeLast() {
+            this.productList.pop()
+            this.counter--
+            eventBus.$emit('updateProgressBar',this.counter)
+        }
     }
 })
 

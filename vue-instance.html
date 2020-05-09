@@ -12,6 +12,18 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
   </head>
 <body>
+
+    <script type="text/template" id="header-part"> 
+        <div>  
+            <div class="container">
+                <div class="jumbotron">
+                  <h1 style="text-align:center">Add Product Project</h1>      
+                  <p style="text-align:center">This simple Vue.js application was developed by Hikmet.</p>
+                </div>
+              </div>
+        </div>
+    </script>
+
     <script type="text/x-template" id="productForm">
             <form id="form1">  
                 <div class="row">
@@ -29,6 +41,7 @@
                         <input type="text" v-model="form.price" class="form-control" id="productPrice" placeholder="Product Price">
                         </div>
                         <button type="button" @click="addProduct" class="btn btn-primary">ADD PRODUCT</button>
+
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
@@ -63,24 +76,26 @@
                         <th scope="col">Product Name</th>
                         <th scope="col">Product Price</th>
                         <th scope="col">Product Quantity</th>
+                        <th scope="col">PROCESS</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr v-for="(product, index) in productList">
+                      <tr v-for="(product, index) in productList" :key="index">
                         <th scope="row">{{index+1}}</th>
                         <td><img :src="product.imagePath" class="mr-3" :alt="product.name" width="100px" height="100px"></td>
                         <td>{{product.name}}</td>
                         <td>{{product.price}}</td>
                         <td>{{product.quantity}}</td>
+                        <button type="button" @click="removeLast"  class="btn btn-danger">REMOVE LAST</button>
                       </tr>
                     </tbody>
                   </table>
             </div>
         </div>
     </script>
-
-
+    
     <div id="app">
+        <header-part></header-part>
         <div class="container">
             <product-form></product-form>
             <hr v-if="show">
